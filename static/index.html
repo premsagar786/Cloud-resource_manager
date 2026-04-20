@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Resource Manager - Banker's Algorithm</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                    </svg>
+                    <h1>Cloud Resource Manager</h1>
+                </div>
+                <p class="subtitle">Deadlock Avoidance using Banker's Algorithm</p>
+            </div>
+        </header>
+
+        <!-- Scenario Selector -->
+        <section class="scenario-section">
+            <div class="card">
+                <h2>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    Select Scenario
+                </h2>
+                <div class="scenario-buttons" id="scenarioButtons">
+                    <button class="scenario-btn active" data-scenario="cloud_computing">
+                        <span class="btn-icon">&#9729;</span>
+                        Cloud Computing
+                    </button>
+                    <button class="scenario-btn" data-scenario="database_connections">
+                        <span class="btn-icon">&#128451;</span>
+                        Database Connections
+                    </button>
+                    <button class="scenario-btn" data-scenario="manufacturing">
+                        <span class="btn-icon">&#9881;</span>
+                        Manufacturing
+                    </button>
+                    <button class="scenario-btn" data-scenario="hospital_system">
+                        <span class="btn-icon">&#127973;</span>
+                        Hospital System
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- System State Overview -->
+        <section class="state-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        System State
+                    </h2>
+                    <div class="status-badge" id="statusBadge">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Checking...</span>
+                    </div>
+                </div>
+
+                <!-- Available Resources -->
+                <div class="resources-grid" id="resourcesGrid">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Safe Sequence -->
+                <div class="safe-sequence" id="safeSequence">
+                    <strong>Safe Sequence:</strong>
+                    <span id="safeSequenceText">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Allocation Matrix -->
+        <section class="matrix-section">
+            <div class="card">
+                <h2>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    Resource Allocation Matrix
+                </h2>
+                <div class="matrix-container">
+                    <table id="allocationTable">
+                        <thead>
+                            <tr id="tableHeader">
+                                <th>Service</th>
+                                <!-- Dynamically populated -->
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resource Request Form -->
+        <section class="request-section">
+            <div class="card">
+                <h2>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="16"/>
+                        <line x1="8" y1="12" x2="16" y2="12"/>
+                    </svg>
+                    Resource Request / Release
+                </h2>
+
+                <form id="resourceForm">
+                    <div class="form-group">
+                        <label for="serviceSelect">Service</label>
+                        <select id="serviceSelect">
+                            <!-- Dynamically populated -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Action</label>
+                        <div class="action-toggle">
+                            <button type="button" class="action-btn active" data-action="request">Request Resources</button>
+                            <button type="button" class="action-btn" data-action="release">Release Resources</button>
+                        </div>
+                    </div>
+
+                    <div class="resource-inputs" id="resourceInputs">
+                        <!-- Dynamically populated -->
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="submitBtn">Submit Request</button>
+                        <button type="button" class="btn-secondary" id="resetBtn">Reset System</button>
+                    </div>
+                </form>
+
+                <!-- Response Message -->
+                <div class="response-message" id="responseMessage"></div>
+            </div>
+        </section>
+
+        <!-- Activity Log -->
+        <section class="log-section">
+            <div class="card">
+                <h2>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    Activity Log
+                </h2>
+                <div class="log-container" id="logContainer">
+                    <p class="empty-log">No activity yet. Request or release resources to see the log.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Cloud Resource Manager | Built with Flask & Banker's Algorithm for Deadlock Avoidance</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
